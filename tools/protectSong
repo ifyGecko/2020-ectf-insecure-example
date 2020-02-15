@@ -46,14 +46,17 @@ class ProtectedSong(object):
         for val in bytes(self.metadata):
             index+=1
             ciph_val = tabula_recta[val][ord(secret[index%19])]
-            protected_md_val = struct.pack('<h', ciph_val)
+            protected_md_val = struct.pack('<B', ciph_val)
             protected_wav.writeframesraw(protected_md_val)
+
+        # reset key index    
+        index = -1
         
         # cipher wav song data
         for val in bytes(self.full_song):
             index+=1
             ciph_val = tabula_recta[val][ord(secret[index%19])]
-            protected_wav_val = struct.pack('<h', ciph_val)
+            protected_wav_val = struct.pack('<B', ciph_val)
             protected_wav.writeframesraw(protected_wav_val)
 
         protected_wav.close()
