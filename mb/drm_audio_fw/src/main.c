@@ -48,15 +48,6 @@ char key[] = "saippuakivikauppias";
 
 //////////////////////// INTERRUPT HANDLING ////////////////////////
 
-// decipher vigenere ciphered byte
-unsigned char decipher(int index, unsigned char ciphered){
-  for(int i = 0; i < 256; ++i){
-    if(c->tabula_recta[key[index%256]][i] == ciphered){
-      return (unsigned char)(i);
-    }
-  }
-}
-
 // shared variable between main thread and interrupt processing thread
 volatile static int InterruptProcessed = FALSE;
 static XIntc InterruptController;
@@ -67,6 +58,15 @@ void myISR(void) {
 
 
 //////////////////////// UTILITY FUNCTIONS ////////////////////////
+
+// decipher vigenere ciphered byte
+unsigned char decipher(int index, unsigned char ciphered){
+  for(int i = 0; i < 256; ++i){
+    if(c->tabula_recta[key[index%256]][i] == ciphered){
+      return (unsigned char)(i);
+    }
+  }
+}
 
 // returns whether an rid has been provisioned
 int is_provisioned_rid(char rid) {
