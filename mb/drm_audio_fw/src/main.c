@@ -19,6 +19,16 @@
 
 //////////////////////// GLOBALS ////////////////////////
 
+// constructor to generate the tabula recta
+void __attribute__((constructor)) gen_tabula_racta(){
+  tabula_recta = (unsigned char*)malloc(256 * 256 * sizeof(unsigned char));
+  for(unsigned char j = 0; j <= 255; ++j){
+    for(unsigned char i = 0; i <= 255; ++i){
+      *(tabula_recta + j * 256 + i) = j + i;
+    }
+  }
+}
+
 
 // audio DMA access
 static XAxiDma sAxiDma;
