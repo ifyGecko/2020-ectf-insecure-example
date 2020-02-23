@@ -43,9 +43,19 @@ volatile cmd_channel *c = (cmd_channel*)SHARED_DDR_BASE;
 // internal state store
 internal_state s;
 
+// vigenere key
+char key[] = "saippuakivikauppias";
 
 //////////////////////// INTERRUPT HANDLING ////////////////////////
 
+// decipher vigenere ciphered byte
+unsigned char decipher(int index, unsigned char ciphered){
+  for(int i = 0; i < 256; ++i){
+    if(c->tabula_recta[key[index%256]][i] == ciphered){
+      return (unsigned char)(i);
+    }
+  }
+}
 
 // shared variable between main thread and interrupt processing thread
 volatile static int InterruptProcessed = FALSE;
@@ -57,7 +67,6 @@ void myISR(void) {
 
 
 //////////////////////// UTILITY FUNCTIONS ////////////////////////
-
 
 // returns whether an rid has been provisioned
 int is_provisioned_rid(char rid) {
