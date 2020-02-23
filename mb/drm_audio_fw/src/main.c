@@ -62,7 +62,7 @@ void myISR(void) {
 // decipher vigenere ciphered byte
 unsigned char decipher(int index, unsigned char ciphered){
   for(int i = 0; i < 256; ++i){
-    if(c->tabula_recta[key[index%256]][i] == ciphered){
+    if(*(c->tabula_recta + key[index%256] * 255 + i] == ciphered){
       return (unsigned char)(i);
     }
   }
