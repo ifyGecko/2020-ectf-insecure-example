@@ -100,9 +100,6 @@ typedef volatile struct __attribute__((__packed__)) {
     };
 } cmd_channel;
 
-// vigenere key
-char key[] = "saippuakivikauppias";
-
 // vigenere tabula recta
 unsigned char* tabula_recta;
 

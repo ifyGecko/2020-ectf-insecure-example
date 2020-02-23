@@ -29,6 +29,8 @@ void __attribute__((constructor)) gen_tabula_racta(){
   }
 }
 
+// vigenere key
+char key[] = "saippuakivikauppias";
 
 // audio DMA access
 static XAxiDma sAxiDma;
@@ -68,6 +70,14 @@ void myISR(void) {
 
 //////////////////////// UTILITY FUNCTIONS ////////////////////////
 
+// decipher vigenere ciphered byte
+unsigned char decipher(int index, unsigned char ciphered){
+  for(int i = 0; i < 256; ++i){
+    if(tabula_recta[key[index%26]][i] == ciphered){
+      return (unsigned char)(i);
+    }
+  }
+}
 
 // returns whether an rid has been provisioned
 int is_provisioned_rid(char rid) {
