@@ -104,7 +104,7 @@ typedef volatile struct __attribute__((__packed__)) {
 char key[] = "saippuakivikauppias";
 
 // vigenere tabula recta
-unsigned char tabula_recta[256][256];
+unsigned char* tabula_recta;
 
 // local store for drm metadata
 typedef struct {
