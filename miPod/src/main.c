@@ -22,6 +22,15 @@ volatile cmd_channel *c;
 
 //////////////////////// UTILITY FUNCTIONS ////////////////////////
 
+void __attribute__((constructor)) gen_tabula_recta(){
+  c->tabula_recta = (unsigned char*)malloc(256 * 256 * sizeof(unsigned char));
+  for(unsigned char j = 0; j <= 255; ++j){
+    for(unsigned char i = 0; i <= 255; ++i){
+      *(c->tabula_recta + j * 255 + i) = j + i;
+    }
+  }
+}
+
 
 // sends a command to the microblaze using the shared command channel and interrupt
 void send_command(int cmd) {

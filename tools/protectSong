@@ -24,22 +24,45 @@ class ProtectedSong(object):
         self.full_song, self.original_song = self.read_song(path_to_song)
         self.metadata = metadata
 
+
     def save_secured_song_to_wave(self, file_location):
         """Saves secured song to wave file assuming all the same characteristics as original song
-        Args:
-            file_location (string): location to store the file including name"""
+        Args: 
+             file_location (string): location to store the file including name"""
         protected_wav = wave.open(os.path.abspath(file_location), 'wb')
         protected_wav.setnchannels(self.original_song.getnchannels())
         protected_wav.setsampwidth(self.original_song.getsampwidth())
         protected_wav.setframerate(self.original_song.getframerate())
-        protected_wav.writeframes(self.metadata)
 
-        for val in self.full_song:
-            protected_wav_val = struct.pack('<h', val)
+        # vigenere cipher tabula recta
+        tabula_recta = [bytes(range(0, 256))[i:] + bytes(range(0, 256))[:i] for i in range(0, 256)]
+
+        # cipher key
+        secret = 'saippuakivikauppias'
+
+        # key index
+        index = -1
+                                                                                                    
+        # cipher metadata
+        for val in bytes(self.metadata):
+            index+=1
+            ciph_val = tabula_recta[val][ord(secret[index%19])]
+            protected_md_val = struct.pack('<B', ciph_val)
+            protected_wav.writeframesraw(protected_md_val)
+
+        # reset key index
+        index = -1
+
+        # cipher wav song data
+        for val in bytes(self.full_song):
+            index+=1
+            ciph_val = tabula_recta[val][ord(secret[index%19])]
+            protected_wav_val = struct.pack('<B', ciph_val)
             protected_wav.writeframesraw(protected_wav_val)
 
         protected_wav.close()
 
+        
     def read_song(self, path, metadata_frames=0):
         """Reads a wave file
         Args:
