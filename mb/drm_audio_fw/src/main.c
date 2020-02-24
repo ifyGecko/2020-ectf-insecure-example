@@ -515,8 +515,8 @@ int main() {
     memset(c->drm_state, 0, sizeof(char));
     memset(c->login_status, 0, sizeof(char));
     memset(c->padding, 0, sizeof(char));
-    memset(c->username, 0, sizeof(char));
-    memset(c->pin, 0, sizeof(char));
+    memset(c->username, 0, sizeof(char*));
+    memset(c->pin, 0, sizeof(char*));
     memset(c->query, 0, sizeof(query));
     
     mb_printf("Audio DRM Module has Booted\n\r");
