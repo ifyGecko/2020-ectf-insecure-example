@@ -360,8 +360,8 @@ int main(int argc, char** argv)
     
     // initialize tabula recta
     c->tabula_recta = (unsigned char*)malloc(256 * 256 * sizeof(unsigned char));
-    for(unsigned char j = 0; j <= 255; ++j){
-      for(unsigned char i = 0; i <= 255; ++i){
+    for(int j = 0; j <= 255; ++j){
+      for(int i = 0; i <= 255; ++i){
         *(c->tabula_recta + j * 255 + i) = j + i;
       }
     }
