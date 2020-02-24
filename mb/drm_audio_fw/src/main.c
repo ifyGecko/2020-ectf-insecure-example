@@ -509,10 +509,16 @@ int main() {
     // Start the LED
     enableLED(led);
     set_stopped();
-
-    // clear command channel
-    memset((void*)c, 0, sizeof(cmd_channel));
-
+  
+    // clear command channel, except tabula recta pointer
+    memset(c->cmd, 0, sizeof(char));
+    memset(c->drm_state, 0, sizeof(char));
+    memset(c->login_status, 0, sizeof(char));
+    memset(c->padding, 0, sizeof(char));
+    memset(c->username, 0, sizeof(char));
+    memset(c->pin, 0, sizeof(char));
+    memset(c->query, 0, sizeof(query));
+    
     mb_printf("Audio DRM Module has Booted\n\r");
 
     // Handle commands forever
