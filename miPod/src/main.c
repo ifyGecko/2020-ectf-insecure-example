@@ -22,16 +22,6 @@ volatile cmd_channel *c;
 
 //////////////////////// UTILITY FUNCTIONS ////////////////////////
 
-void __attribute__((constructor)) gen_tabula_recta(){
-  c->tabula_recta = (unsigned char*)malloc(256 * 256 * sizeof(unsigned char));
-  for(unsigned char j = 0; j <= 255; ++j){
-    for(unsigned char i = 0; i <= 255; ++i){
-      *(c->tabula_recta + j * 255 + i) = j + i;
-    }
-  }
-}
-
-
 // sends a command to the microblaze using the shared command channel and interrupt
 void send_command(int cmd) {
     memcpy((void*)&c->cmd, &cmd, 1);
@@ -367,6 +357,15 @@ int main(int argc, char** argv)
         mp_printf("MMAP Failed! Error = %d\r\n", errno);
         return -1;
     }
+    
+    // initialize tabula recta
+    c->tabula_recta = (unsigned char*)malloc(256 * 256 * sizeof(unsigned char));
+    for(unsigned char j = 0; j <= 255; ++j){
+      for(unsigned char i = 0; i <= 255; ++i){
+        *(c->tabula_recta + j * 255 + i) = j + i;
+      }
+    }
+  
     mp_printf("Command channel open at %p (%dB)\r\n", c, sizeof(cmd_channel));
 
     // dump player information before command loop
