@@ -158,13 +158,22 @@ int username_to_uid(char *username, char *uid, int provisioned_only) {
 void load_song_md() {
   int i = 0;
   
-  s.song_md.md_size = decipher(i++,c->song.md.md_size);
-  mb_printf("Metadata Size %d\n", s.song_md.md_size);
-  s.song_md.owner_id = c->song.md.owner_id;
-  s.song_md.num_regions = c->song.md.num_regions;
-  s.song_md.num_users = c->song.md.num_users;
+  s.song_md.md_size = decipher(i++, c->song.md.md_size);
+  s.song_md.owner_id = decipher(i++, c->song.md.owner_id);
+  s.song_md.num_regions = decipher(i++, c->song.md.num_regions);
+  s.song_md.num_users = decipher(i++, c->song.md.num_users);
+
   memcpy(s.song_md.rids, (void *)get_drm_rids(c->song), s.song_md.num_regions);
+
+  for(int j = 0; j < s.song_md.num_regions; j++){
+    s.song_md.rids = decipher(i++, s.song_md.rid);
+  }
+  
   memcpy(s.song_md.uids, (void *)get_drm_uids(c->song), s.song_md.num_users);
+
+  for(int j = 0; j < s.song_md.num_users; j++){
+    s.song_md.uids = decipher(i++, s.song_md.uids);
+  }
 }
 
 
