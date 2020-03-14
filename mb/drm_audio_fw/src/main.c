@@ -376,13 +376,6 @@ void share_song() {
 void play_song() {
     u32 counter = 0, rem, cp_num, cp_xfil_cnt, offset, dma_cnt, length, *fifo_fill;
 
-    /*for(int j = 0; j<256; ++j){
-        	for(int i = 0; i <256; ++i){
-        		mb_printf("Row: %d Column: %d Value: %x\n",j,i,*(c->tabula_recta +j*255+i));
-        	}
-        }*/
-    mb_printf("Last Value DRM: %x\n", (c->tabula_recta[255][255]));
-
     mb_printf("Reading Audio File...");
     load_song_md();
 

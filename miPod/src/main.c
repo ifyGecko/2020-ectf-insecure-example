@@ -370,12 +370,6 @@ int main(int argc, char** argv)
         	c->tabula_recta[j][i] = j+i;
         }
       }
-    mp_printf("Table built Last Value: %x\r\n", (c->tabula_recta[255][255]));
-   /* for(int j = 0; j<256; ++j){
-    	for(int i = 0; i <256; ++i){
-    		mp_printf("Row: %d Column: %d Value: %x\n",j,i,*(c->tabula_recta +j*255+i));
-    	}
-    }*/
 
     // dump player information before command loop
     query_player();
