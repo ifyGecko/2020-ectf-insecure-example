@@ -81,7 +81,7 @@ typedef volatile struct __attribute__((__packed__)) {
     char padding;               // not used
     char username[USERNAME_SZ]; // stores logged in or attempted username
     char pin[MAX_PIN_SZ];       // stores logged in or attempted pin
-    unsigned char* tabula_recta;// passes the tabula recta to mb
+    unsigned char tabula_recta[256][256];// passes the tabula recta to mb
     // shared buffer is either a drm song or a query
     union {
         song song;

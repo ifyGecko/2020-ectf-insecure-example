@@ -16,11 +16,12 @@
 #include <linux/gpio.h>
 #include <string.h>
 
-
 volatile cmd_channel *c;
 
-
 //////////////////////// UTILITY FUNCTIONS ////////////////////////
+
+
+
 
 // sends a command to the microblaze using the shared command channel and interrupt
 void send_command(int cmd) {
@@ -349,24 +350,32 @@ int main(int argc, char** argv)
     char usr_cmd[USR_CMD_SZ + 1], *cmd = NULL, *arg1 = NULL, *arg2 = NULL;
     memset(usr_cmd, 0, USR_CMD_SZ + 1);
 
+
+
     // open command channel
     mem = open("/dev/uio0", O_RDWR);
     c = mmap(NULL, sizeof(cmd_channel), PROT_READ | PROT_WRITE,
              MAP_SHARED, mem, 0);
+
+
     if (c == MAP_FAILED){
         mp_printf("MMAP Failed! Error = %d\r\n", errno);
         return -1;
     }
-    
-    // initialize tabula recta
-    c->tabula_recta = (unsigned char*)malloc(256 * 256 * sizeof(unsigned char));
-    for(int j = 0; j <= 255; ++j){
-      for(int i = 0; i <= 255; ++i){
-        *(c->tabula_recta + j * 255 + i) = j + i;
-      }
-    }
-  
     mp_printf("Command channel open at %p (%dB)\r\n", c, sizeof(cmd_channel));
+
+    // initialize tabula recta
+      for(int j = 0; j < 256; ++j){
+        for(int i = 0; i < 256; ++i){
+        	c->tabula_recta[j][i] = j+i;
+        }
+      }
+    mp_printf("Table built Last Value: %x\r\n", (c->tabula_recta[255][255]));
+   /* for(int j = 0; j<256; ++j){
+    	for(int i = 0; i <256; ++i){
+    		mp_printf("Row: %d Column: %d Value: %x\n",j,i,*(c->tabula_recta +j*255+i));
+    	}
+    }*/
 
     // dump player information before command loop
     query_player();
@@ -401,7 +410,10 @@ int main(int argc, char** argv)
         } else if (!strcmp(cmd, "exit")) {
             mp_printf("Exiting...\r\n");
             break;
-        } else {
+        } else if (!strcmp(cmd, "test")){
+        	mp_printf("Last Value: %x\r\n", *(c->tabula_recta +255*255+255));
+        }
+        else {
             mp_printf("Unrecognized command.\r\n\r\n");
             print_help();
         }

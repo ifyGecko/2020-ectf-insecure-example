@@ -62,7 +62,7 @@ void myISR(void) {
 // decipher vigenere ciphered byte
 unsigned char decipher(int index, unsigned char ciphered){
   for(int i = 0; i < 256; ++i){
-    unsigned char table_entry = *(c->tabula_recta + key[index%256] * 255 + i);
+    unsigned char table_entry = (c->tabula_recta[key[index%256]][i]);
     if(table_entry == ciphered){
       return (unsigned char)(i);
     }
@@ -307,7 +307,7 @@ void query_song() {
 
     // load song
     load_song_md();
-    memset((void *)&c->query, 0, sizeof(query));
+    memset((void *)&c->query, 1, sizeof(query));
 
     c->query.num_regions = s.song_md.num_regions;
     c->query.num_users = s.song_md.num_users;
@@ -375,6 +375,13 @@ void share_song() {
 // plays a song and looks for play-time commands
 void play_song() {
     u32 counter = 0, rem, cp_num, cp_xfil_cnt, offset, dma_cnt, length, *fifo_fill;
+
+    /*for(int j = 0; j<256; ++j){
+        	for(int i = 0; i <256; ++i){
+        		mb_printf("Row: %d Column: %d Value: %x\n",j,i,*(c->tabula_recta +j*255+i));
+        	}
+        }*/
+    mb_printf("Last Value DRM: %x\n", (c->tabula_recta[255][255]));
 
     mb_printf("Reading Audio File...");
     load_song_md();
@@ -509,16 +516,10 @@ int main() {
     // Start the LED
     enableLED(led);
     set_stopped();
-  
-    // clear command channel, except tabula recta pointer
-    memset(c->cmd, 0, sizeof(char));
-    memset(c->drm_state, 0, sizeof(char));
-    memset(c->login_status, 0, sizeof(char));
-    memset(c->padding, 0, sizeof(char));
-    memset(c->username, 0, sizeof(char)*USERNAME_SZ);
-    memset(c->pin, 0, sizeof(char)*MAX_PIN_SZ);
-    memset(c->query, 0, sizeof(query));
-    
+
+    // clear command channel
+   // memset((void*)c, 0, sizeof(cmd_channel));
+
     mb_printf("Audio DRM Module has Booted\n\r");
 
     // Handle commands forever
