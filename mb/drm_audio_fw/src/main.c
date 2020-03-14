@@ -159,7 +159,7 @@ void load_song_md() {
   int i = 0;
   
   s.song_md.md_size = decipher(i++,c->song.md.md_size);
-  md_printf("Metadata Size %d\n", s.song_md.md_size);
+  mb_printf("Metadata Size %d\n", s.song_md.md_size);
   s.song_md.owner_id = c->song.md.owner_id;
   s.song_md.num_regions = c->song.md.num_regions;
   s.song_md.num_users = c->song.md.num_users;
