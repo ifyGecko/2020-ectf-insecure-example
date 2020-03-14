@@ -166,13 +166,13 @@ void load_song_md() {
   memcpy(s.song_md.rids, (void *)get_drm_rids(c->song), s.song_md.num_regions);
 
   for(int j = 0; j < s.song_md.num_regions; j++){
-    s.song_md.rids = decipher(i++, s.song_md.rid);
+    s.song_md.rids[j] = decipher(i++, s.song_md.rids[j]);
   }
   
   memcpy(s.song_md.uids, (void *)get_drm_uids(c->song), s.song_md.num_users);
 
   for(int j = 0; j < s.song_md.num_users; j++){
-    s.song_md.uids = decipher(i++, s.song_md.uids);
+    s.song_md.uids[j] = decipher(i++, s.song_md.uids[j]);
   }
 }
 
